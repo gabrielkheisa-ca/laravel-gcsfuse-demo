@@ -1,5 +1,7 @@
 # Dockerized Laravel with GCS Fuse
 
+![app_screenshot](https://storage.googleapis.com/gabriel-ca/images/nusamed/bucket-gcsfuse-demo.jpg)
+
 This project provides a fully containerized Laravel development environment designed to test Google Cloud Storage (GCS) integration using `gcsfuse`. The entire setup runs within Docker, requiring no installation of PHP, Composer, or other dependencies on the host machine.
 
 The primary goal is to mount a GCS bucket directly into the container's filesystem at `storage/app/gcs`, allowing the Laravel application to interact with GCS objects as if they were local files.
