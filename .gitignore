@@ -1,0 +1,60 @@
+# Laravel Specific #
+/bootstrap/cache/*
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+/storage/logs/*
+
+# Vendor dependencies
+/vendor/*
+/node_modules/*
+/public/hot
+
+# Environment configuration
+.env
+.env.backup
+# .env.example
+
+# IDE Specific #
+.idea
+*.swp
+*.swo
+*.DS_Store
+
+# Docker Specific #
+docker-compose.override.yml
+docker-compose.yml.backup
+Dockerfile.backup
+.dockerignore
+
+# Service Account Files #
+/service-accounts/*
+!/service-accounts/.gitkeep 
+/gcp-keys/gcs-key.json
+
+# Compiled assets
+/public/js/*
+/public/css/*
+!/public/js/.gitkeep  
+!/public/css/.gitkeep  
+
+# Temporary files
+*.log
+*.tmp
+*.bak
+*.sql
+*.gz
+
+# OS generated files #
+._*
+*.pyc
+
+# Other
+Homestead.yaml
+Homestead.json
+Vagrantfile
+npm-debug.log
+yarn-error.log
+composer.lock
+
+populate.sh

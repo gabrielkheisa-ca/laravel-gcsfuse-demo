@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      # The context is the 'src' directory, where the Dockerfile and app code reside.
+      context: ./src
+      dockerfile: Dockerfile
+    container_name: laravel_gcs_app
+    restart: unless-stopped
+    volumes:
+      # Mount the named volume. On first run, Docker will auto-populate this
+      # volume with the contents of /var/www/html from the built image.
+      - app-code:/var/www/html
+      # Mount the .env file and the service account key from the host.
+      - ./.env:/var/www/html/.env:ro
+      - ./gcp-keys/gcs-key.json:/etc/gcp/gcs-key.json:ro
+    environment:
+      # Pass the GCS bucket name from the .env file to the container.
+      - GCS_BUCKET_NAME=${GCS_BUCKET_NAME}
+    networks:
+      - laravel
+    # Required capabilities for gcsfuse to operate inside the container.
+    cap_add:
+      - SYS_ADMIN
+    devices:
+      - /dev/fuse
+    security_opt:
+      - apparmor:unconfined
+
+  nginx:
+    image: nginx:1.25-alpine
+    container_name: laravel_gcs_nginx
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      # Nginx mounts the SAME named volume, but read-only, to serve the public files.
+      - app-code:/var/www/html:ro
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+    networks:
+      - laravel
+
+networks:
+  laravel:
+    driver: bridge
+
+# Define the named volume that will be shared between the app and nginx containers.
+volumes:
+  app-code:
+    driver: local
